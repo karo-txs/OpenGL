@@ -32,12 +32,13 @@ if __name__ == '__main__':
     t = 0
 
     # Criação de objetos
-    asteroids, garbage = [], []
+    stars, asteroids, garbage = [], [], []
     for i in range(20):
         asteroids.append(Asteroid())
         garbage.append(Garbage())
+    for i in range(100):
+        stars.append(Star())
     jupyter = Jupyter()
-    stars = Star()
 
     # Configurações (tamanho, posicoes, qtd)
     generate_obj = True
@@ -87,6 +88,9 @@ if __name__ == '__main__':
 
         jupyter.draw_jupyter_matrix(boxx, boxy)
 
+        for s, x, y in zip(stars, pos_stars_x, pos_stars_y):
+            s.draw_star_matrix(x, y, t)
+
         # Gerando posições com numeros aleatorios
         if generate_obj:
             for i in range(max):
@@ -107,8 +111,6 @@ if __name__ == '__main__':
             if gar.x < -50:
                 gar.x = random.randint(50, 100)
             i += 1
-
-        stars.draw_star_matrix(pos_stars_x, pos_stars_y, t)
 
         # 'Pintando' os objetos de acordo com as coordenadas geradas
         flag = True

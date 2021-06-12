@@ -8,11 +8,11 @@ from OpenGL.GLU import *
 
 from pygame.mixer import *
 
-from jupyter2D.Asteroid import Asteroid
-from jupyter2D.Garbage import Garbage
-from jupyter2D.Jupyter import Jupyter
-from jupyter2D.Star import Star
-from jupyter2D.Cone import Cone
+from jupyter3D.Asteroid import Asteroid
+from jupyter3D.Garbage import Garbage
+from jupyter3D.Jupyter import Jupyter
+from jupyter3D.Star import Star
+from jupyter3D.Cone import Cone
 
 if __name__ == '__main__':
 

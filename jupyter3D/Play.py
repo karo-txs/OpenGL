@@ -12,7 +12,7 @@ from jupyter3D.Asteroid import Asteroid
 from jupyter3D.Garbage import Garbage
 from jupyter3D.Jupyter import Jupyter
 from jupyter3D.Star import Star
-from jupyter3D.Cone import Cone
+from jupyter3D.scalable_cone import Cone
 
 if __name__ == '__main__':
     init(frequency=22050, size=-16, channels=2, buffer=4096)
@@ -59,11 +59,11 @@ if __name__ == '__main__':
     max = 100
     tam_gar = [10, 20]
     tam_con = [2, 3]
-    tam_ast = [40, 80]
+    tam_ast = [8, 20]
+    tam_ast2 = [30, 50]
     pos_stars_x, pos_stars_y = [], []
     pos_asteroids_x, pos_asteroids_y = [], []
     pos_garbage_x, pos_garbage_y, pos_garbage_z = [], [], []
-    pos_cone_x, pos_cone_y, pos_cone_z = [], [], []
 
     while True:
         t += 1
@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
         glClearColor(0.0, 0.0, 0.0, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        stars.draw_star_matrix(pos_stars_x, pos_stars_y, t)
+
         jupyter.draw_jupyter_matrix(boxx, boxy)
 
         # Gerando posições com numeros aleatorios
@@ -121,11 +121,13 @@ if __name__ == '__main__':
                 pos_asteroids_y.append(random.randint(-100, 50))
             generate_obj = False
 
+        stars.draw_star_matrix(pos_stars_x, pos_stars_y, t)
+
         i = 0
         for ast, gar, con in zip(asteroids, garbage, cone):
             if ast.x < -50:
                 ast.x = random.randint(50, 100)
-            if gar.x < -50:
+            if gar.x < -90:
                 gar.x = random.randint(100, 200)
             i += 1
 
@@ -134,14 +136,21 @@ if __name__ == '__main__':
         for a, c, x, y in zip(asteroids, cone, pos_asteroids_x, pos_asteroids_y):
             if flag:
                 a.draw_asteroid_matrix(x, y, tam_ast[0])
+                a.draw_asteroid_matrix(x, y, tam_ast2[0])
                 flag = False
             else:
                 a.draw_asteroid_matrix(x, y, tam_ast[1])
+                a.draw_asteroid_matrix(x, y, tam_ast2[1])
                 flag = True
 
+        flag = True
         for g, x, y, z in zip(garbage, pos_garbage_x, pos_garbage_y, pos_garbage_z):
-            for tam in tam_gar:
-                g.draw_garbage_matrix(x, y, z, tam)
+            if flag:
+                g.draw_garbage_matrix(x, y, z, tam_gar[0])
+                flag = False
+            else:
+                g.draw_garbage_matrix(x, y, z, tam_gar[1])
+                flag = True
 
         pygame.display.flip()
-        time.sleep(0.01)
+        time.sleep(0.001)

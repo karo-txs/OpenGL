@@ -9,11 +9,11 @@ class Asteroid:
         self.x = -1
         self.y = -1
 
-    def draw_asteroid(self, x, y):
+    def draw_asteroid(self, x, y, tam):
         glColor3f(0.75, 0.54, 0.33)
         GLUquadric * 1
         quad = gluNewQuadric()
-        glTranslatef(x, y, -10)
+        glTranslatef(x, y, -tam)
         gluSphere(quad, 1, 100, 500)
 
     def draw_asteroid_matrix(self, x, y, tam):
@@ -26,6 +26,6 @@ class Asteroid:
 
         self.x -= 0.3
         glTranslatef(self.x, 0, 0)
-        self.draw_asteroid(self.x, self.y)
+        self.draw_asteroid(self.x, self.y, tam)
         glPopMatrix()
 

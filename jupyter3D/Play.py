@@ -16,7 +16,7 @@ from jupyter3D.scalable_cone import Cone
 
 if __name__ == '__main__':
     init(frequency=22050, size=-16, channels=2, buffer=4096)
-    # music.load('../music/Billy\'s Sacrifice.mp3')  # https://dos88.itch.io/dos-88-music-library?download
+    # music.load('../assets/Billy\'s Sacrifice.mp3')  # https://dos88.itch.io/dos-88-music-library?download
     # music.play()
 
     # Configurações de tela

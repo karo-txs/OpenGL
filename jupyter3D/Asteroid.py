@@ -1,4 +1,3 @@
-import math
 from OpenGL.GL import *
 from OpenGL.GLU import gluSphere
 from OpenGL.GLU.quadrics import GLUquadric
@@ -11,11 +10,11 @@ class Asteroid:
         self.y = -1
 
     def draw_asteroid(self, x, y):
-
-        glColor3f(1, 0.76, 0.13 );
-        quad = gluNewQuadric();
-        glTranslatef(x, y, 0);
-        gluSphere(quad, 2, 30, 30);
+        glColor3f(0.75, 0.54, 0.33)
+        GLUquadric * 1
+        quad = gluNewQuadric()
+        glTranslatef(x, y, -10)
+        gluSphere(quad, 1, 100, 500)
 
     def draw_asteroid_matrix(self, x, y, tam):
         if self.x == -1 and self.y == -1:
@@ -29,3 +28,4 @@ class Asteroid:
         glTranslatef(self.x, 0, 0)
         self.draw_asteroid(self.x, self.y)
         glPopMatrix()
+

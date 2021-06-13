@@ -15,9 +15,6 @@ from jupyter3D.Star import Star
 from jupyter3D.Cone import Cone
 
 if __name__ == '__main__':
-
-
-
     init(frequency=22050, size=-16, channels=2, buffer=4096)
     # music.load('../music/Billy\'s Sacrifice.mp3')  # https://dos88.itch.io/dos-88-music-library?download
     # music.play()
@@ -41,12 +38,9 @@ if __name__ == '__main__':
     glEnable(GL_LIGHT0)
     glEnable(GL_DEPTH_TEST)
 
-
-
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-
-    gluPerspective(100, float(size[0]) / size[1], 10, 1000)
+    gluPerspective(50, size[0] / size[1], 0.1, 100.0)
     glMatrixMode(GL_MODELVIEW)
 
     t = 0
@@ -63,9 +57,9 @@ if __name__ == '__main__':
     # Configurações (tamanho, posicoes, qtd)
     generate_obj = True
     max = 100
-    tam_gar = [40, 50, 60]
-    tam_con = [20, 30, 40]
-    tam_ast = [30, 40]
+    tam_gar = [10, 20]
+    tam_con = [2, 3]
+    tam_ast = [40, 80]
     pos_stars_x, pos_stars_y = [], []
     pos_asteroids_x, pos_asteroids_y = [], []
     pos_garbage_x, pos_garbage_y, pos_garbage_z = [], [], []
@@ -106,7 +100,7 @@ if __name__ == '__main__':
                     jupyter.draw_jupyter_matrix(boxx, boxy)
 
                 elif ev.key == pygame.K_a:
-                    jupyter.draw_jupyter_matrix(50,50)
+                    jupyter.draw_jupyter_matrix(50, 50)
 
         glClearColor(0.0, 0.0, 0.0, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -120,10 +114,6 @@ if __name__ == '__main__':
                 pos_garbage_y.append(random.randint(-100, 50))
                 pos_garbage_z.append(random.randint(50, 100))
 
-                pos_cone_x.append(random.randint(50, 100))
-                pos_cone_y.append(random.randint(-100, 50))
-                pos_cone_z.append(random.randint(50, 100))
-
                 pos_stars_x.append(random.randint(-100, 100))
                 pos_stars_y.append(random.randint(-100, 100))
 
@@ -136,25 +126,17 @@ if __name__ == '__main__':
             if ast.x < -50:
                 ast.x = random.randint(50, 100)
             if gar.x < -50:
-                gar.x = random.randint(50, 100)
-            if con.x < -50:
-                con.x = random.randint(50, 100)
+                gar.x = random.randint(100, 200)
             i += 1
-
-
 
         # 'Pintando' os objetos de acordo com as coordenadas geradas
         flag = True
         for a, c, x, y in zip(asteroids, cone, pos_asteroids_x, pos_asteroids_y):
             if flag:
-                c.draw_cone_matrix(x - 10, y - 10, tam_con[1])
                 a.draw_asteroid_matrix(x, y, tam_ast[0])
-
                 flag = False
             else:
-                c.draw_cone_matrix(x - 10, y - 10, tam_con[0])
                 a.draw_asteroid_matrix(x, y, tam_ast[1])
-
                 flag = True
 
         for g, x, y, z in zip(garbage, pos_garbage_x, pos_garbage_y, pos_garbage_z):

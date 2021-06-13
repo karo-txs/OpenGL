@@ -10,7 +10,7 @@ class Asteroid:
         self.y = -1
 
     def draw_asteroid(self, x, y, tam):
-        glColor3f(0.75, 0.54, 0.33)
+        glColor3f(150/255, 75/255, 0)
         GLUquadric * 1
         quad = gluNewQuadric()
         glTranslatef(x, y, -tam)

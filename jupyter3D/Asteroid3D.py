@@ -5,7 +5,7 @@ from OpenGL.GLU.quadrics import GLUquadric
 from OpenGL.raw.GLU import gluNewQuadric
 
 
-class Asteroid:
+class Asteroid3D:
     def __init__(self):
         self.x = -1
         self.y = -1

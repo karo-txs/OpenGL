@@ -18,3 +18,4 @@ class Jupyter3D:
         glTranslatef(boxx, boxy, 0)
         self.draw_jupyter(0, 0)
         glPopMatrix()
+

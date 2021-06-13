@@ -8,11 +8,11 @@ from OpenGL.GLU import *
 
 from pygame.mixer import *
 
-from jupyter3D.Asteroid import Asteroid
-from jupyter3D.Garbage import Garbage
-from jupyter3D.Jupyter import Jupyter
-from jupyter3D.Star import Star
-from jupyter3D.Cone import Cone
+from jupyter3D.Asteroid3D import Asteroid3D
+from jupyter3D.Garbage3D import Garbage3D
+from jupyter3D.Jupyter3D import Jupyter3D
+from jupyter3D.Star3D import Star3D
+from jupyter3D.Cone3D import Cone3D
 
 if __name__ == '__main__':
 
@@ -54,11 +54,11 @@ if __name__ == '__main__':
     # Criação de objetos
     asteroids, garbage, cone = [], [], []
     for i in range(20):
-        asteroids.append(Asteroid())
-        garbage.append(Garbage())
-        cone.append(Cone())
-    jupyter = Jupyter()
-    stars = Star()
+        asteroids.append(Asteroid3D())
+        garbage.append(Garbage3D())
+        cone.append(Cone3D())
+    jupyter = Jupyter3D()
+    stars = Star3D()
 
     # Configurações (tamanho, posicoes, qtd)
     generate_obj = True

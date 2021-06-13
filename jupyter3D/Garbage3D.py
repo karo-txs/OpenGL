@@ -61,7 +61,8 @@ def draw_garbage2(x, y, z):
 
 def draw_garbage(x, y, z):
     glLoadIdentity()
-    glRotatef(120, 1.0, 0.0, 0.0)
+    glRotatef(120, 1, 0, 0)
+
 
     # FRENTE
     glBegin(GL_POLYGON)
@@ -117,7 +118,6 @@ def draw_garbage(x, y, z):
     glVertex3f(-2 + x, -2 + y, -2 + z)
     glEnd()
 
-
 class Garbage3D:
     def __init__(self):
         self.x = -1
@@ -132,12 +132,12 @@ class Garbage3D:
 
         glPushMatrix()
         self.x -= 0.1
-        glLoadIdentity();
+        glLoadIdentity()
         glTranslatef(self.x, 0, 0)
         draw_garbage(self.x, y, z)
 
         self.x -= 0.1
-        glLoadIdentity();
+        glLoadIdentity()
 
         glTranslatef(self.x + 50, 150, 0 - 50)
         draw_garbage2(self.x - 40, y - 100, z - 30)

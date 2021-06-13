@@ -3,7 +3,7 @@ from OpenGL.GL import *
 from OpenGL.raw.GLU import GLUquadric, gluNewQuadric, gluSphere, gluDisk
 
 
-class Jupyter:
+class Jupyter3D:
     def draw_jupyter(self, x, y):
 
         glColor3f(230 / 255, 182 / 255, 126 / 255)

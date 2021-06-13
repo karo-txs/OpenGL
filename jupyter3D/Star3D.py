@@ -2,7 +2,7 @@ import math
 from OpenGL.GL import *
 
 
-class Star:
+class Star3D:
     def draw_star(self, x, y, t):
 
         glBegin(GL_TRIANGLES)

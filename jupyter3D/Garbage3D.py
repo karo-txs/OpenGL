@@ -118,7 +118,7 @@ def draw_garbage(x, y, z):
     glEnd()
 
 
-class Garbage:
+class Garbage3D:
     def __init__(self):
         self.x = -1
         self.y = -1

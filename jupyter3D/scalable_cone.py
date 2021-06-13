@@ -1,48 +1,153 @@
+"""GLUT replacement for the original checker.py demonstration code
+Note:
+	Has no navigation code ATM.
+"""
+
+# This is statement is required by the build system to query build info
+import pygame
+
+if __name__ == '__build__':
+    raise Exception
+
+__version__ = '$Revision: 1.1.1.1 $'[11:-2]
+__date__ = '$Date: 2007/02/15 19:25:11 $'[6:-2]
+
+import OpenGL
+
+OpenGL.ERROR_ON_COPY = True
+
 from OpenGL.GL import *
-from OpenGL.GLU import gluCylinder
+from OpenGL.GLU import *
+from OpenGL.GLUT import *
+import time, sys
 
-from OpenGL.GLU.quadrics import GLUquadric
-from OpenGL.raw.GLU import gluNewQuadric
 
-
-class Cone:
-    def __init__(self):
-        self.x = -1
-        self.y = -1
-
-    def draw_cone(self, x, y, tam):
-        glColor3f(0.76, 1, 0.13)
-        GLUquadric * 1
-        quad = gluNewQuadric()
-        glTranslatef(x, y, 0)
-        gluCylinder(quad, 2, 0.1, 2, 50, 50)
-
-        glTranslatef(-20, -20, 0)
-        gluCylinder(quad, 0.1, 2, 3, 50, 50)
-
-    def draw_cone_matrix(self, x, y, tam):
-        if self.x == -1 and self.y == -1:
-            self.x = x
-            self.y = y
-
-        glPushMatrix()
-        glTranslatef(0, 0, -tam)
-
-        self.x -= 0.3
-        glTranslatef(self.x, 0, 0)
-        self.draw_cone(self.x, self.y, tam)
+def drawCone(position=(0, -1, 0), radius=1.0, height=2, slices=50, stacks=10):
+    glPushMatrix()
+    try:
+        glTranslatef(*position)
+        glRotatef(250, 1, 0, 0)
+        glutSolidCone(radius, height, slices, stacks)
+    finally:
         glPopMatrix()
 
-    def draw_cone_scalef(self, x, y, tam):
-        if self.x == -1 and self.y == -1:
-            self.x = x
-            self.y = y
 
-        glPushMatrix()
-        #glTranslatef(0, 0, -tam)
+def coneMaterial():
+    """Setup material for cone"""
+    glMaterialfv(GL_FRONT, GL_AMBIENT, GLfloat_4(0.2, 0.2, 0.2, 1.0))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, GLfloat_4(0.8, 0.8, 0.8, 1.0))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, GLfloat_4(1.0, 0.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_SHININESS, GLfloat(50.0))
 
-        self.x -= 0.3
-        #glTranslatef(self.x, 0, 0)
-        glScalef(10, 10, 10)
-        self.draw_cone(self.x, self.y, tam)
-        glPopMatrix()
+
+def light():
+    """Setup light 0 and enable lighting"""
+    glLightfv(GL_LIGHT0, GL_AMBIENT, GLfloat_4(0.0, 1.0, 0.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, GLfloat_4(1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, GLfloat_4(1.0, 1.0, 1.0, 1.0))
+    glLightfv(GL_LIGHT0, GL_POSITION, GLfloat_4(1.0, 1.0, 1.0, 0.0));
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, GLfloat_4(0.2, 0.2, 0.2, 1.0))
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+
+
+def depth():
+    """Setup depth testing"""
+    glDepthFunc(GL_LESS)
+    glEnable(GL_DEPTH_TEST)
+
+cone_grande = False
+
+def display(swap=1, clear=1):
+    global tam_cone
+    """Callback function for displaying the scene
+	This defines a unit-square environment in which to draw,
+	i.e. width is one drawing unit, as is height
+	"""
+
+    # if cone_grande is False:
+    #     cone_grande = True
+    if clear:
+        glClearColor(0, 0, 0, 0)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+    # establish the projection matrix (perspective)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    x, y, width, height = glGetDoublev(GL_VIEWPORT)
+    gluPerspective(
+        45,  # field of view in degrees
+        width / float(height or 1),  # aspect ratio
+        .25,  # near clipping plane
+        200,  # far clipping plane
+    )
+
+    # and then the model view matrix
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+    gluLookAt(
+        0, 1, 5,  # eyepoint
+        0, 0, 0,  # center-of-view
+        0, 1, 0,  # up-vector
+    )
+    light()
+    depth()
+    coneMaterial()
+
+    rotation()
+    if cone_grande:
+        drawCone(radius=1.5, height=3, slices=75, stacks=15)
+    else:
+        drawCone()
+
+    if swap:
+        glutSwapBuffers()
+
+
+def idle():
+    glutPostRedisplay()
+
+
+starttime = time.time()
+
+from OpenGL._bytes import as_8_bit
+
+ESC = as_8_bit('\033')
+
+def key_pressed(*args):
+    global cone_grande
+    # If escape is pressed, kill everything.
+    if str(args[0]) == "b'a'" or str(args[0]) == "b'A'":
+        print("a")
+        cone_grande = True
+
+    elif str(args[0]) == "b'd'" or str(args[0]) == "b'D'":
+        print("b")
+        cone_grande = False
+
+    elif args[0] == ESC:
+        sys.exit()
+
+def rotation(period=10):
+    """Do rotation of the scene at given rate"""
+    angle = (((time.time() - starttime) % period) / period) * 360
+    glRotate(angle, 0, 1, 0)
+    return angle
+
+
+
+def main():
+    print("""You should see a high-resolution cone rotating slowly.""")
+    import sys
+    glutInit(sys.argv)
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
+    glutCreateWindow('Rotating Cone')
+    glutDisplayFunc(display)
+    glutKeyboardFunc(key_pressed)
+    glutIdleFunc(display)
+    # note need to do this to properly render faceted geometry
+    glutMainLoop()
+
+
+if __name__ == "__main__":
+    main()

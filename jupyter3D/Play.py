@@ -12,7 +12,7 @@ from jupyter3D.Asteroid import Asteroid
 from jupyter3D.Garbage import Garbage
 from jupyter3D.Jupyter import Jupyter
 from jupyter3D.Star import Star
-from jupyter3D.scalable_cone import Cone
+
 
 if __name__ == '__main__':
     init(frequency=22050, size=-16, channels=2, buffer=4096)
@@ -46,13 +46,14 @@ if __name__ == '__main__':
     t = 0
 
     # Criação de objetos
-    asteroids, garbage, cone = [], [], []
+    stars, asteroids, garbage = [], [], []
+    for i in range(50):
+        stars.append(Star())
+
     for i in range(20):
         asteroids.append(Asteroid())
         garbage.append(Garbage())
-        cone.append(Cone())
     jupyter = Jupyter()
-    stars = Star()
 
     # Configurações (tamanho, posicoes, qtd)
     generate_obj = True
@@ -105,6 +106,9 @@ if __name__ == '__main__':
         glClearColor(0.0, 0.0, 0.0, 1.0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        for s, x, y in zip(stars, pos_stars_x, pos_stars_y):
+            s.draw_star_matrix(x, y, t)
+
         jupyter.draw_jupyter_matrix(boxx, boxy)
 
         # Gerando posições com numeros aleatorios
@@ -121,10 +125,10 @@ if __name__ == '__main__':
                 pos_asteroids_y.append(random.randint(-100, 50))
             generate_obj = False
 
-        stars.draw_star_matrix(pos_stars_x, pos_stars_y, t)
+        # stars.draw_star_matrix(pos_stars_x, pos_stars_y, t)
 
         i = 0
-        for ast, gar, con in zip(asteroids, garbage, cone):
+        for ast, gar in zip(asteroids, garbage):
             if ast.x < -50:
                 ast.x = random.randint(50, 100)
             if gar.x < -90:
@@ -133,7 +137,7 @@ if __name__ == '__main__':
 
         # 'Pintando' os objetos de acordo com as coordenadas geradas
         flag = True
-        for a, c, x, y in zip(asteroids, cone, pos_asteroids_x, pos_asteroids_y):
+        for a, x, y in zip(asteroids, pos_asteroids_x, pos_asteroids_y):
             if flag:
                 a.draw_asteroid_matrix(x, y, tam_ast[0])
                 a.draw_asteroid_matrix(x, y, tam_ast2[0])
@@ -142,7 +146,6 @@ if __name__ == '__main__':
                 a.draw_asteroid_matrix(x, y, tam_ast[1])
                 a.draw_asteroid_matrix(x, y, tam_ast2[1])
                 flag = True
-
         flag = True
         for g, x, y, z in zip(garbage, pos_garbage_x, pos_garbage_y, pos_garbage_z):
             if flag:
@@ -153,4 +156,4 @@ if __name__ == '__main__':
                 flag = True
 
         pygame.display.flip()
-        time.sleep(0.001)
+        time.sleep(0.01)
